@@ -1,0 +1,26 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:TrolleybusApp.ViewModels"
+        xmlns:models="using:TrolleybusApp.Models"
+        x:Class="TrolleybusApp.Views.MainWindow"
+        Title="Trolleybus App">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+
+    <StackPanel Margin="10">
+        <TextBlock Text="Список троллейбусов:" FontSize="16" FontWeight="Bold" />
+        <ListBox ItemsSource="{Binding Trolleybuses}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Number}" FontWeight="Bold" />
+                        <TextBlock Text="{Binding Status}" />
+                        <TextBlock Text="{Binding Speed, StringFormat='Скорость: {0} км/ч'}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </StackPanel>
+</Window>
