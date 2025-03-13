@@ -18,16 +18,15 @@ namespace TrolleybusApp.Models
         public void AssignTrolleybus(Trolleybus trolleybus)
         {
             CurrentTrolleybus = trolleybus;
-            trolleybus.OnPolesOff += FixPoles; 
+            trolleybus.OnPolesOff += FixPoles;
         }
 
         private async void FixPoles(Trolleybus trolleybus)
         {
-            //задержка в 0.5 секунды
             await Task.Delay(500);
 
-            trolleybus.FixPoles(); 
-            Console.WriteLine($"{Name} put the poles back in place for trolleybus {trolleybus.Id}"); 
+            trolleybus.FixPoles();
+            Console.WriteLine($"{Name} put the poles back in place for trolleybus {trolleybus.Id}");
         }
     }
 }

@@ -61,13 +61,13 @@ namespace TrolleybusApp.Models
                 Random random = new Random();
                 while (true)
                 {
-                    Thread.Sleep(1000); // Имитация движения
-                    if (random.Next(100) < 5) // 5% вероятность поломки
+                    Thread.Sleep(1000); // Simulate movement
+                    if (random.Next(100) < 5) // 5% chance of breakdown
                     {
                         IsBroken = true;
                         OnBreakdown?.Invoke(this);
                     }
-                    if (random.Next(100) < 10) // 10% вероятность соскакивания штанг
+                    if (random.Next(100) < 10) // 10% chance of poles slipping
                     {
                         ArePolesOff = true;
                         OnPolesOff?.Invoke(this);

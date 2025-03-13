@@ -10,14 +10,15 @@
     </Design.DataContext>
 
     <StackPanel Margin="10">
-        <TextBlock Text="Список троллейбусов:" FontSize="16" FontWeight="Bold" />
+        <TextBlock Text="List of Trolleybuses:" FontSize="16" FontWeight="Bold" />
         <ListBox ItemsSource="{Binding Trolleybuses}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
                         <TextBlock Text="{Binding Id}" FontWeight="Bold" />
-                        <TextBlock Text="{Binding IsBroken, StringFormat='Состояние: {0}'}" />
-                        <TextBlock Text="{Binding ArePolesOff, StringFormat='Штанги: {0}'}" /> <!-- отображение состояния штанг -->
+                        <TextBlock Text="{Binding IsBroken, StringFormat='Status: {0}'}" />
+                        <TextBlock Text="{Binding ArePolesOff, StringFormat='Poles: {0}'}" />
+                        <TextBlock Text="{Binding CurrentDriver.Name, StringFormat='Driver: {0}'}" />
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

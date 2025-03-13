@@ -12,23 +12,22 @@ namespace TrolleybusApp.ViewModels
         {
             var emergencyService = new EmergencyService();
 
-            // Список имен водителей
             string[] driverNames = { "Ivan Ivanov", "Petr Petrov", "Sergey Sergeev" };
 
             for (int i = 1; i <= 3; i++)
             {
                 var trolleybus = new Trolleybus(i);
-                var driver = new Driver(driverNames[i - 1]);
+                var driver = new Driver(driverNames[i - 1]); 
 
                 trolleybus.OnBreakdown += emergencyService.FixBreakdown;
                 driver.AssignTrolleybus(trolleybus);
                 Trolleybuses.Add(trolleybus);
                 trolleybus.StartMoving();
 
-                Console.WriteLine($"Add Trolleybus number{trolleybus.Id} with driver {driver.Name}");
+                Console.WriteLine($"Added trolleybus №{trolleybus.Id} with driver {driver.Name}");
             }
 
-            Console.WriteLine($"All Trolleybuses: {Trolleybuses.Count}");
+            Console.WriteLine($"Total trolleybuses: {Trolleybuses.Count}");
         }
     }
 }
