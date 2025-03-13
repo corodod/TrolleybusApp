@@ -1,72 +1,94 @@
-#nullable enable
-
 using System;
+using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace TrolleybusApp.Models
 {
-    public class Trolleybus
+    public class Trolleybus : INotifyPropertyChanged
     {
-        public int Number { get; }
-        public int Speed { get; private set; }
-        public string Status { get; private set; } = "Работает";
+        public int Id { get; }
+        private bool _isBroken;
+        private bool _arePolesOff;
+        public Driver? CurrentDriver { get; private set; }
 
-        public event Action<Trolleybus>? OnBreakdown = null; // Явная инициализация
-        public event Action<Trolleybus>? OnPolesSlipped = null; // Явная инициализация
-
-        private readonly Random _random = new Random();
-
-        public Trolleybus(int number)
+        public bool IsBroken
         {
-            Number = number;
+            get => _isBroken;
+            private set
+            {
+                if (_isBroken != value)
+                {
+                    _isBroken = value;
+                    OnPropertyChanged(nameof(IsBroken));
+                }
+            }
         }
 
-        public void Start()
+        public bool ArePolesOff
+        {
+            get => _arePolesOff;
+            private set
+            {
+                if (_arePolesOff != value)
+                {
+                    _arePolesOff = value;
+                    OnPropertyChanged(nameof(ArePolesOff));
+                }
+            }
+        }
+
+        public event Action<Trolleybus>? OnBreakdown;
+        public event Action<Trolleybus>? OnPolesOff;
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public Trolleybus(int id)
+        {
+            Id = id;
+            IsBroken = false;
+            ArePolesOff = false;
+        }
+
+        public void AssignDriver(Driver driver)
+        {
+            CurrentDriver = driver;
+        }
+
+        public void StartMoving()
         {
             Task.Run(() =>
             {
+                Random random = new Random();
                 while (true)
                 {
-                    Move();
-                    Thread.Sleep(1000); // Задержка для имитации движения
+                    Thread.Sleep(1000); // Имитация движения
+                    if (random.Next(100) < 5) // 5% вероятность поломки
+                    {
+                        IsBroken = true;
+                        OnBreakdown?.Invoke(this);
+                    }
+                    if (random.Next(100) < 10) // 10% вероятность соскакивания штанг
+                    {
+                        ArePolesOff = true;
+                        OnPolesOff?.Invoke(this);
+                    }
                 }
             });
         }
 
-        private void Move()
-        {
-            Speed = _random.Next(20, 60);
-            Status = "Движется";
-
-            // Случайная поломка
-            if (_random.Next(100) < 5) // 5% вероятность поломки
-            {
-                Breakdown();
-            }
-
-            // Случайное соскакивание штанг
-            if (_random.Next(100) < 10) // 10% вероятность соскакивания штанг
-            {
-                PolesSlipped();
-            }
-        }
-
-        private void Breakdown()
-        {
-            Status = "Сломан";
-            OnBreakdown?.Invoke(this);
-        }
-
-        private void PolesSlipped()
-        {
-            Status = "Штанги соскочили";
-            OnPolesSlipped?.Invoke(this);
-        }
-
         public void Fix()
         {
-            Status = "Работает";
+            IsBroken = false;
+        }
+
+        public void FixPoles()
+        {
+            ArePolesOff = false;
+        }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

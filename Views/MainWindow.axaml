@@ -15,9 +15,9 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
-                        <TextBlock Text="{Binding Number}" FontWeight="Bold" />
-                        <TextBlock Text="{Binding Status}" />
-                        <TextBlock Text="{Binding Speed, StringFormat='Скорость: {0} км/ч'}" />
+                        <TextBlock Text="{Binding Id}" FontWeight="Bold" />
+                        <TextBlock Text="{Binding IsBroken, StringFormat='Состояние: {0}'}" />
+                        <TextBlock Text="{Binding ArePolesOff, StringFormat='Штанги: {0}'}" /> <!-- отображение состояния штанг -->
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

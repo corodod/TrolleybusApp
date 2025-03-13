@@ -1,13 +1,14 @@
 #nullable enable
 
 using System;
+using System.Threading.Tasks;
 
 namespace TrolleybusApp.Models
 {
     public class Driver
     {
         public string Name { get; }
-        public Trolleybus? CurrentTrolleybus { get; private set; } = null; // Явная инициализация
+        public Trolleybus? CurrentTrolleybus { get; private set; } = null;
 
         public Driver(string name)
         {
@@ -17,13 +18,16 @@ namespace TrolleybusApp.Models
         public void AssignTrolleybus(Trolleybus trolleybus)
         {
             CurrentTrolleybus = trolleybus;
-            trolleybus.OnPolesSlipped += FixPoles;
+            trolleybus.OnPolesOff += FixPoles; 
         }
 
-        private void FixPoles(Trolleybus trolleybus)
+        private async void FixPoles(Trolleybus trolleybus)
         {
-            trolleybus.Fix();
-            Console.WriteLine($"{Name} поставил штанги на место для троллейбуса {trolleybus.Number}");
+            //задержка в 0.5 секунды
+            await Task.Delay(500);
+
+            trolleybus.FixPoles(); 
+            Console.WriteLine($"{Name} put the poles back in place for trolleybus {trolleybus.Id}"); 
         }
     }
 }
